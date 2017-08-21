@@ -5,7 +5,31 @@
  R4wk, ZeuX, IngisKahn, bspkrs
  MCP Data version : unknown
 ****************************
+:extractMcpData UP-TO-DATE
+:getVersionJson
+:extractUserDev UP-TO-DATE
+:genSrgs SKIPPED
+:extractNatives UP-TO-DATE
+:getAssetsIndex
+:getAssets
+:makeStart SKIPPED
+:downloadMcpTools SKIPPED
+:downloadClient SKIPPED
+:downloadServer SKIPPED
+:mergeJars SKIPPED
+:deobfuscateJar SKIPPED
+:decompile SKIPPED
+:processSources SKIPPED
+:remapJar SKIPPED
+:extractMinecraftSrc SKIPPED
+:recompMinecraft SKIPPED
+:repackMinecraft SKIPPED
+:setupDecompWorkspace UP-TO-DATE
+:applyBinPatches SKIPPED
+:deobfBinJar SKIPPED
+:setupDevWorkspace UP-TO-DATE
+:ideaModule
 
 BUILD SUCCESSFUL
 
-Total time: 9.266 secs
+Total time: 17.346 secs
