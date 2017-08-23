@@ -4,8 +4,6 @@ import com.example.examplemod.entities.mobs.swarm.EntitySwarm;
 import com.example.examplemod.entities.mobs.swarm.EntityTest2Swarm;
 import com.example.examplemod.entities.mobs.swarm.EntityTestSwarm;
 import com.example.examplemod.entities.mobs.swarm.RenderSwarm;
-import com.example.examplemod.entities.mobs.testmob.TestMob;
-import com.example.examplemod.entities.mobs.testmob.TestMobRender;
 import com.example.examplemod.entities.particles.ParticleEngine;
 import com.example.examplemod.items.SpawnEgg;
 import cpw.mods.fml.client.registry.RenderingRegistry;
