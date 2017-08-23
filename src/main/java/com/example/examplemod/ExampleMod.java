@@ -2,7 +2,7 @@ package com.example.examplemod;
 
 import com.example.examplemod.entities.TestMob;
 import com.example.examplemod.entities.TestMobRender;
-import com.example.examplemod.entities.TestMobSpawnEgg;
+import com.example.examplemod.items.SpawnEgg;
 import com.google.common.eventbus.Subscribe;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -25,19 +25,13 @@ import net.minecraftforge.common.MinecraftForge;
 import java.awt.*;
 
 @Mod(modid = ExampleMod.MODID, version = ExampleMod.VERSION)
-public class ExampleMod
-{
+public class ExampleMod {
     public static final String MODID = "examplemod";
     public static final String VERSION = "1.0";
 
     @Mod.Instance("examplemod")
     public static ExampleMod instance;
 
-    public static Item itemSpawnEgg = new TestMobSpawnEgg(Color.RED.getRGB(), Color.WHITE.getRGB())
-            .setUnlocalizedName("sample:spawn_egg")
-            .setTextureName("spawn_egg")
-            .setCreativeTab(CreativeTabs.tabMisc);
-    
     @EventHandler
     public void init(FMLInitializationEvent event) {
 		// some example code
@@ -52,9 +46,10 @@ public class ExampleMod
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event){
+        GameRegistry.registerItem(new SpawnEgg().setUnlocalizedName("ItemSpawnerEgg"), "ItemSpawnerEgg", MODID);
         // MOD独自のモブを追加。今回のサンプルには含まれないことに注意
+        SpawnEgg.addMapping("TestMob", Color.RED.getRGB(), Color.WHITE.getRGB());
         EntityRegistry.registerModEntity(TestMob.class, "TestMob", 0, ExampleMod.instance, 64, 2, true);
         // スポーンエッグを追加
-        GameRegistry.registerItem(itemSpawnEgg, "itemSpawnEggExample");
     }
 }
