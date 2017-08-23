@@ -5,6 +5,7 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -18,7 +19,7 @@ import static com.example.examplemod.utils.Calc.random;
 /**
  * Created by ctare on 2017/08/23.
  */
-public class EntityTest2Swarm extends EntityFlying {
+public class EntityTest2Swarm extends EntityFlying implements IMob{
     SwarmParticleManager particleManager = new SwarmParticleManager();
 
     public EntityTest2Swarm(World p_i1738_1_) {
@@ -30,7 +31,7 @@ public class EntityTest2Swarm extends EntityFlying {
         super.applyEntityAttributes();
         getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5d);
         getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(5d);
-        getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(2 + 4);
+//        getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(2 + 4);
     }
 
     @Override

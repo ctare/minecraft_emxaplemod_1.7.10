@@ -42,7 +42,6 @@ public class SwarmParticleManager {
                 a++;
             } while (true);
             if (particles.size() < Math.max(SwarmParticleManager.particleCount(PARTICLE_NUM), 10)) {
-                System.out.printf("%f %f %f%n", r, g, b);
                 EntityFX fx = new FXSwarm(target.worldObj,
                         target.posX + (random() - random()) * 2.0,
                         target.posY + (random() - random()) * 2.0,

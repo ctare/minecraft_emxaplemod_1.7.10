@@ -133,14 +133,17 @@ public class SpawnEgg extends Item {
             Entity entity = null;
 
             for(int j = 0; j < 1; ++j) {
+                System.out.println(spawnList.get(par1).name);
+                System.out.println(par1);
                 entity = EntityList.createEntityByName(spawnList.get(par1).name, par0World);
+                System.out.println("ok");
+                System.out.println(entity);
                 if(entity != null && entity instanceof EntityLivingBase) {
                     EntityLiving entityliving = (EntityLiving)entity;
                     entity.setLocationAndAngles(par2, par4, par6, MathHelper.wrapAngleTo180_float(par0World.rand.nextFloat() * 360.0F), 0.0F);
                     entityliving.rotationYawHead = entityliving.rotationYaw;
                     entityliving.renderYawOffset = entityliving.rotationYaw;
                     entityliving.onSpawnWithEgg(null);
-                    System.out.println(entity);
                     par0World.spawnEntityInWorld(entity);
                     entityliving.playLivingSound();
                 }
