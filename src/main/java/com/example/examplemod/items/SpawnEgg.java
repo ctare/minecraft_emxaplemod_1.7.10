@@ -1,6 +1,7 @@
 package com.example.examplemod.items;
 
 import com.example.examplemod.ExampleMod;
+import com.example.examplemod.entities.mobs.swarm.EntityTestSwarm;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import java.util.ArrayList;
@@ -26,12 +27,13 @@ import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 
 public class SpawnEgg extends Item {
-    static ArrayList<SpawnEgg.EntityEggStuff> spawnList = new ArrayList();
+    static ArrayList<SpawnEgg.EntityEggStuff> spawnList = new ArrayList<EntityEggStuff>();
     @SideOnly(Side.CLIENT)
     private IIcon theIcon;
 
-    public static void addMapping(String name, int c1, int c2) {
+    public static String addMapping(String name, int c1, int c2) {
         spawnList.add(new SpawnEgg.EntityEggStuff(ExampleMod.MODID + "." + name, c1, c2));
+        return name;
     }
 
     public SpawnEgg() {
@@ -56,6 +58,7 @@ public class SpawnEgg extends Item {
     }
 
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
+        System.out.println("use");
         if(world.isRemote) {
             return true;
         } else {
@@ -84,42 +87,43 @@ public class SpawnEgg extends Item {
     }
 
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if(world.isRemote) {
-            return stack;
-        } else {
-            MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(world, player, true);
-            if(movingobjectposition == null) {
-                return stack;
-            } else {
-                if(movingobjectposition.typeOfHit == MovingObjectType.BLOCK) {
-                    int i = movingobjectposition.blockX;
-                    int j = movingobjectposition.blockY;
-                    int k = movingobjectposition.blockZ;
-                    if(!world.canMineBlock(player, i, j, k)) {
-                        return stack;
-                    }
-
-                    if(!player.canPlayerEdit(i, j, k, movingobjectposition.sideHit, stack)) {
-                        return stack;
-                    }
-
-                    if(world.getBlock(i, j, k) instanceof BlockLiquid) {
-                        Entity entity = spawnCreature(world, stack.getItemDamage(), (double)i, (double)j, (double)k);
-                        if(entity != null) {
-                            if(entity instanceof EntityLivingBase && stack.hasDisplayName()) {
-                                ((EntityLiving)entity).setCustomNameTag(stack.getDisplayName());
-                            }
-
-                            if(!player.capabilities.isCreativeMode) {
-                                --stack.stackSize;
-                            }
-                        }
-                    }
-                }
-
-                return stack;
-            }
-        }
+        return stack;
+//        if(world.isRemote) {
+//            return stack;
+//        } else {
+//            MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(world, player, true);
+//            if(movingobjectposition == null) {
+//                return stack;
+//            } else {
+//                if(movingobjectposition.typeOfHit == MovingObjectType.BLOCK) {
+//                    int i = movingobjectposition.blockX;
+//                    int j = movingobjectposition.blockY;
+//                    int k = movingobjectposition.blockZ;
+//                    if(!world.canMineBlock(player, i, j, k)) {
+//                        return stack;
+//                    }
+//
+//                    if(!player.canPlayerEdit(i, j, k, movingobjectposition.sideHit, stack)) {
+//                        return stack;
+//                    }
+//
+//                    if(world.getBlock(i, j, k) instanceof BlockLiquid) {
+//                        Entity entity = spawnCreature(world, stack.getItemDamage(), (double)i, (double)j, (double)k);
+//                        if(entity != null) {
+//                            if(entity instanceof EntityLivingBase && stack.hasDisplayName()) {
+//                                ((EntityLiving)entity).setCustomNameTag(stack.getDisplayName());
+//                            }
+//
+//                            if(!player.capabilities.isCreativeMode) {
+//                                --stack.stackSize;
+//                            }
+//                        }
+//                    }
+//                }
+//
+//                return stack;
+//            }
+//        }
     }
 
     public static Entity spawnCreature(World par0World, int par1, double par2, double par4, double par6) {
@@ -129,18 +133,18 @@ public class SpawnEgg extends Item {
             Entity entity = null;
 
             for(int j = 0; j < 1; ++j) {
-                entity = EntityList.createEntityByName(((SpawnEgg.EntityEggStuff)spawnList.get(par1)).name, par0World);
+                entity = EntityList.createEntityByName(spawnList.get(par1).name, par0World);
                 if(entity != null && entity instanceof EntityLivingBase) {
                     EntityLiving entityliving = (EntityLiving)entity;
                     entity.setLocationAndAngles(par2, par4, par6, MathHelper.wrapAngleTo180_float(par0World.rand.nextFloat() * 360.0F), 0.0F);
                     entityliving.rotationYawHead = entityliving.rotationYaw;
                     entityliving.renderYawOffset = entityliving.rotationYaw;
-                    entityliving.onSpawnWithEgg((IEntityLivingData)null);
+                    entityliving.onSpawnWithEgg(null);
+                    System.out.println(entity);
                     par0World.spawnEntityInWorld(entity);
                     entityliving.playLivingSound();
                 }
             }
-
             return entity;
         }
     }

@@ -1,8 +1,5 @@
-package com.example.examplemod.entities;
+package com.example.examplemod.entities.mobs.testmob;
 
-import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.model.ModelSlime;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -17,7 +14,8 @@ public class TestMobRender extends RenderLiving{
 
     @Override
     protected ResourceLocation getEntityTexture(Entity p_110775_1_) {
-        return new ResourceLocation("samctare", "misc/white.png");
+        return null;
+//        return new ResourceLocation("samctare", "misc/white.png");
 //        return AbstractClientPlayer.locationStevePng;
     }
 }

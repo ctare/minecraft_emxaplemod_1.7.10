@@ -1,21 +1,17 @@
-package com.example.examplemod.entities;
+package com.example.examplemod.entities.mobs.testmob;
 
-import com.example.examplemod.FXSwarm;
-import com.example.examplemod.ParticleEngine;
+import com.example.examplemod.entities.particles.FXSwarm;
+import com.example.examplemod.entities.particles.ParticleEngine;
 import cpw.mods.fml.client.FMLClientHandler;
-import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.renderer.texture.SimpleTexture;
+import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -75,11 +71,22 @@ public class TestMob extends EntityMob{
                 a++;
             } while(true);
             if(particles.size() < Math.max(TestMob.particleCount(25), 10)){
-                FXSwarm fx = new FXSwarm(worldObj, this.posX + (double)((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 2.0F), this.posY + (double)((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 2.0F), this.posZ + (double)((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 2.0F), this, 0.8F + worldObj.rand.nextFloat() * 0.2F, worldObj.rand.nextFloat() * 0.4F, 1.0F - worldObj.rand.nextFloat() * 0.2F, 0.22f, 15f, 0.08f);
+                EntityFX fx = getParticle();
                 ParticleEngine.instance.addEffect(worldObj, fx);
                 particles.add(fx);
             }
         }
+    }
+
+    public EntityFX getParticle(){
+        return new FXSwarm(
+                worldObj,
+                this.posX + (double)((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 2.0F),
+                this.posY + (double)((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 2.0F),
+                this.posZ + (double)((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 2.0F),
+                this, 0.8F + worldObj.rand.nextFloat() * 0.2F, worldObj.rand.nextFloat() * 0.4F,
+                1.0F - worldObj.rand.nextFloat() * 0.2F,
+                0.22f, 15f, 0.08f);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.example.examplemod;
+package com.example.examplemod.entities.particles;
 
 /**
  * Created by ctare on 2017/08/21.

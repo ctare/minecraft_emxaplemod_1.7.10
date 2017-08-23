@@ -1,20 +1,17 @@
-package com.example.examplemod;
+package com.example.examplemod.entities.particles;
 
 /**
  * Created by ctare on 2017/08/21.
  */
+import com.example.examplemod.ExampleMod;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 
-import java.io.FileNotFoundException;
 import java.util.*;
-import java.util.concurrent.Callable;
 
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.Tessellator;
@@ -25,7 +22,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ReportedException;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import org.lwjgl.opengl.GL11;
 
