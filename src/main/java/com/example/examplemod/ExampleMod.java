@@ -1,9 +1,7 @@
 package com.example.examplemod;
 
-import com.example.examplemod.entities.mobs.swarm.EntitySwarm;
-import com.example.examplemod.entities.mobs.swarm.EntityTest2Swarm;
-import com.example.examplemod.entities.mobs.swarm.EntityTestSwarm;
-import com.example.examplemod.entities.mobs.swarm.RenderSwarm;
+import com.example.examplemod.entities.mobs.common.RenderEmpty;
+import com.example.examplemod.entities.mobs.swarm.*;
 import com.example.examplemod.entities.particles.ParticleEngine;
 import com.example.examplemod.items.SpawnEgg;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -12,10 +10,13 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
+import net.minecraft.client.renderer.entity.RenderBlaze;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -35,7 +36,12 @@ public class ExampleMod {
         FMLCommonHandler.instance().bus().register(ParticleEngine.instance);
         MinecraftForge.EVENT_BUS.register(ParticleEngine.instance);
         if(FMLCommonHandler.instance().getSide() == Side.CLIENT) {
-            RenderingRegistry.registerEntityRenderingHandler(EntitySwarm.class, new RenderSwarm());
+//            RenderingRegistry.registerEntityRenderingHandler(EntitySwarm.class, new RenderSwarm());
+            this
+                    .invisible(EntityWaterSwarm.class)
+                    .invisible(EntityTestSwarm.class)
+                    .invisible(EntityTest2Swarm.class)
+            ;
         }
     }
 
@@ -51,7 +57,15 @@ public class ExampleMod {
         EntityRegistry.registerModEntity(EntityTestSwarm.class,
                 SpawnEgg.addMapping("TestSwarm", swarmBaseEggColor, Color.GREEN.getRGB()),
                 id++, this, 64, 2, true);
+        EntityRegistry.registerModEntity(EntityWaterSwarm.class,
+                SpawnEgg.addMapping("WaterSwarm", swarmBaseEggColor, new Color(100, 140, 255).getRGB()),
+                id++, this, 64, 2, true);
         System.out.println("entities count : " + id);
 //        EntityRegistry.addSpawn(TestMob.class, 20, 1, 4, EnumCreatureType.creature, BiomeGenBase.plains);
+    }
+
+    private ExampleMod invisible(Class cls){
+        RenderingRegistry.registerEntityRenderingHandler(cls, new RenderEmpty());
+        return this;
     }
 }

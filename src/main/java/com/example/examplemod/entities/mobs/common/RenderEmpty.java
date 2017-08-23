@@ -1,4 +1,4 @@
-package com.example.examplemod.entities.mobs.swarm;
+package com.example.examplemod.entities.mobs.common;
 
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
@@ -9,9 +9,9 @@ import net.minecraft.util.ResourceLocation;
 /**
  * Created by ctare on 2017/08/23.
  */
-public class RenderSwarm extends RenderLiving{
-    public RenderSwarm() {
-        super(new ModelSwarm(), 0.6f);
+public class RenderEmpty extends RenderLiving{
+    public RenderEmpty() {
+        super(new ModelEmpty(), 0.6f);
     }
 
     @Override
