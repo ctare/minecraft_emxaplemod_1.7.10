@@ -42,6 +42,7 @@ public class ExampleMod {
 //                    .invisible(EntityWaterSwarm.class)
                     .invisible(EntityTestSwarm.class)
                     .invisible(EntityTest2Swarm.class)
+                    .invisible(EntityAirSwarm.class)
             ;
         }
     }
@@ -60,6 +61,9 @@ public class ExampleMod {
                 id++, this, 64, 2, true);
         EntityRegistry.registerModEntity(EntityWaterSwarm.class,
                 SpawnEgg.addMapping("WaterSwarm", swarmBaseEggColor, new Color(100, 140, 255).getRGB()),
+                id++, this, 64, 2, true);
+        EntityRegistry.registerModEntity(EntityAirSwarm.class,
+                SpawnEgg.addMapping("AirSwarm", swarmBaseEggColor, new Color(255, 220, 100).getRGB()),
                 id++, this, 64, 2, true);
         System.out.println("entities count : " + id);
         EntityRegistry.addSpawn(EntityWaterSwarm.class, 20, 0, 1, EnumCreatureType.waterCreature, BiomeGenBase.deepOcean);

@@ -12,12 +12,12 @@ import java.util.List;
 import static com.example.examplemod.utils.Calc.randint;
 
 /**
- * Created by ctare on 2017/08/23.
+ * Created by ctare on 2017/08/27.
  */
-public class EntityTest2Swarm extends EntityFlyingMob {
-    SwarmParticleManager particleManager = new SwarmParticleManager().changeSpeedAndTurn(2);
+public class EntityAirSwarm extends EntityFlyingMob implements ISwarm{
+    private SwarmParticleManager particleManager = new SwarmParticleManager().changeSpeedAndTurn(2);
 
-    public EntityTest2Swarm(World p_i1738_1_) {
+    public EntityAirSwarm(World p_i1738_1_) {
         super(p_i1738_1_);
         setSize(1.0f, 1.0f);
     }
@@ -31,27 +31,6 @@ public class EntityTest2Swarm extends EntityFlyingMob {
                 .addParticle(this);
     }
 
-//
-//    protected float getSoundVolume() {
-//        return 0.1F;
-//    }
-//
-//    protected float getSoundPitch() {
-//        return super.getSoundPitch() * 0.95F;
-//    }
-//
-//    protected String getLivingSound() {
-//        return this.getIsBatHanging() && this.rand.nextInt(4) != 0?null:"mob.bat.idle";
-//    }
-//
-//    protected String getHurtSound() {
-//        return "mob.bat.hurt";
-//    }
-//
-//    protected String getDeathSound() {
-//        return "mob.bat.death";
-//    }
-
     protected Entity findPlayerToAttack() {
         double range = 12.0D;
         AxisAlignedBB box = this.boundingBox.expand(range, range * 1.2, range);
@@ -63,7 +42,7 @@ public class EntityTest2Swarm extends EntityFlyingMob {
         for (Object entity : list) {
             Entity entity2 = (Entity) entity;
 
-            if (!(entity2 instanceof EntityTest2Swarm)) {
+            if (!(entity2 instanceof ISwarm)) {
                 double d1 = this.getDistanceSqToEntity(entity2);
 
                 if (d1 <= d0) {
