@@ -24,6 +24,7 @@ public class EntityTest2Swarm extends EntityFlying implements IMob{
 
     public EntityTest2Swarm(World p_i1738_1_) {
         super(p_i1738_1_);
+        setSize(2.0f, 2.0f);
     }
 
     @Override

@@ -18,6 +18,7 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.awt.*;
@@ -38,7 +39,7 @@ public class ExampleMod {
         if(FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 //            RenderingRegistry.registerEntityRenderingHandler(EntitySwarm.class, new RenderSwarm());
             this
-                    .invisible(EntityWaterSwarm.class)
+//                    .invisible(EntityWaterSwarm.class)
                     .invisible(EntityTestSwarm.class)
                     .invisible(EntityTest2Swarm.class)
             ;
@@ -61,10 +62,10 @@ public class ExampleMod {
                 SpawnEgg.addMapping("WaterSwarm", swarmBaseEggColor, new Color(100, 140, 255).getRGB()),
                 id++, this, 64, 2, true);
         System.out.println("entities count : " + id);
-//        EntityRegistry.addSpawn(TestMob.class, 20, 1, 4, EnumCreatureType.creature, BiomeGenBase.plains);
+        EntityRegistry.addSpawn(EntityWaterSwarm.class, 20, 0, 1, EnumCreatureType.waterCreature, BiomeGenBase.deepOcean);
     }
 
-    private ExampleMod invisible(Class cls){
+    private ExampleMod invisible(Class<? extends Entity> cls){
         RenderingRegistry.registerEntityRenderingHandler(cls, new RenderEmpty());
         return this;
     }

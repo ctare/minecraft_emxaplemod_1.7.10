@@ -58,7 +58,6 @@ public class SpawnEgg extends Item {
     }
 
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
-        System.out.println("use");
         if(world.isRemote) {
             return true;
         } else {
@@ -133,11 +132,7 @@ public class SpawnEgg extends Item {
             Entity entity = null;
 
             for(int j = 0; j < 1; ++j) {
-                System.out.println(spawnList.get(par1).name);
-                System.out.println(par1);
                 entity = EntityList.createEntityByName(spawnList.get(par1).name, par0World);
-                System.out.println("ok");
-                System.out.println(entity);
                 if(entity != null && entity instanceof EntityLivingBase) {
                     EntityLiving entityliving = (EntityLiving)entity;
                     entity.setLocationAndAngles(par2, par4, par6, MathHelper.wrapAngleTo180_float(par0World.rand.nextFloat() * 360.0F), 0.0F);
