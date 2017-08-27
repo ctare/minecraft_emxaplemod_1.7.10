@@ -2,31 +2,17 @@ package com.example.examplemod.entities.mobs.swarm;
 
 import com.example.examplemod.entities.particles.SwarmParticleManager;
 import com.example.examplemod.utils.Calc;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityFlying;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-
 import static com.example.examplemod.utils.Calc.randint;
-import static com.example.examplemod.utils.Calc.random;
 
 /**
  * Created by ctare on 2017/08/23.
@@ -35,7 +21,6 @@ public class EntityTest2Swarm extends EntityMob {
     SwarmParticleManager particleManager = new SwarmParticleManager().changeSpeedAndTurn(2);
 
     private ChunkCoordinates currentFlightTarget;
-    public EntityPlayer owner = null;
     public int damBonus = 0;
 
     public EntityTest2Swarm(World p_i1738_1_) {
@@ -66,18 +51,6 @@ public class EntityTest2Swarm extends EntityMob {
         particleManager
                 .setColor(rdm, rdm - randint(20), randint(70, 120))
                 .addParticle(this);
-
-        if(this.getIsBatHanging()) {
-            this.motionX = this.motionY = this.motionZ = 0.0D;
-            this.posY = (double)MathHelper.floor_double(this.posY) + 1.0D - (double)this.height;
-        } else {
-            this.motionY *= 0.6000000238418579D;
-        }
-
-        if(this.worldObj.isRemote) {
-            this.worldObj.spawnParticle("smoke", this.prevPosX + (double)((this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F), this.prevPosY + (double)(this.height / 2.0F) + (double)((this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F), this.prevPosZ + (double)((this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F), 0.0D, 0.0D, 0.0D);
-            this.worldObj.spawnParticle("flame", this.prevPosX + (double)((this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F), this.prevPosY + (double)(this.height / 2.0F) + (double)((this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F), this.prevPosZ + (double)((this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F), 0.0D, 0.0D, 0.0D);
-        }
     }
 
 
@@ -171,31 +144,21 @@ public class EntityTest2Swarm extends EntityMob {
                     this.currentFlightTarget = new ChunkCoordinates((int)this.posX + this.rand.nextInt(7) - this.rand.nextInt(7), (int)this.posY + this.rand.nextInt(6) - 2, (int)this.posZ + this.rand.nextInt(7) - this.rand.nextInt(7));
                 }
 
-                var1 = (double)this.currentFlightTarget.posX + 0.5D - this.posX;
-                var3 = (double)this.currentFlightTarget.posY + 0.1D - this.posY;
-                var5 = (double)this.currentFlightTarget.posZ + 0.5D - this.posZ;
-                this.motionX += (Math.signum(var1) * 0.5D - this.motionX) * 0.10000000149011612D;
-                this.motionY += (Math.signum(var3) * 0.699999988079071D - this.motionY) * 0.10000000149011612D;
-                this.motionZ += (Math.signum(var5) * 0.5D - this.motionZ) * 0.10000000149011612D;
-                var7 = (float)(Math.atan2(this.motionZ, this.motionX) * 180.0D / 3.141592653589793D) - 90.0F;
-                var8 = MathHelper.wrapAngleTo180_float(var7 - this.rotationYaw);
-                this.moveForward = 0.5F;
-                this.rotationYaw += var8;
-                if(this.rand.nextInt(100) == 0 && this.worldObj.isBlockNormalCubeDefault(MathHelper.floor_double(this.posX), (int)this.posY + 1, MathHelper.floor_double(this.posZ), false)) {
-                    this.setIsBatHanging(true);
-                }
-            } else if(this.entityToAttack != null) {
+                var1 = (double)this.currentFlightTarget.posX + 0.5 - this.posX;
+                var3 = (double)this.currentFlightTarget.posY + 0.1 - this.posY;
+                var5 = (double)this.currentFlightTarget.posZ + 0.5 - this.posZ;
+            } else {
                 var1 = this.entityToAttack.posX - this.posX;
                 var3 = this.entityToAttack.posY + (double)(this.entityToAttack.getEyeHeight() * 0.66F) - this.posY;
                 var5 = this.entityToAttack.posZ - this.posZ;
-                this.motionX += (Math.signum(var1) * 0.5D - this.motionX) * 0.10000000149011612D;
-                this.motionY += (Math.signum(var3) * 0.699999988079071D - this.motionY) * 0.10000000149011612D;
-                this.motionZ += (Math.signum(var5) * 0.5D - this.motionZ) * 0.10000000149011612D;
-                var7 = (float)(Math.atan2(this.motionZ, this.motionX) * 180.0D / 3.141592653589793D) - 90.0F;
-                var8 = MathHelper.wrapAngleTo180_float(var7 - this.rotationYaw);
-                this.moveForward = 0.5F;
-                this.rotationYaw += var8;
             }
+            this.motionX += (Math.signum(var1) * 0.05 - this.motionX) * 0.1;
+            this.motionY += (Math.signum(var3) * 0.07 - this.motionY) * 0.1;
+            this.motionZ += (Math.signum(var5) * 0.05 - this.motionZ) * 0.1;
+            var7 = (float) Math.toDegrees(Math.atan2(this.motionZ, this.motionX)) - 90.0F;
+            var8 = MathHelper.wrapAngleTo180_float(var7 - this.rotationYaw);
+            this.moveForward = 0.5F;
+            this.rotationYaw += var8;
 
             if(this.entityToAttack instanceof EntityPlayer && ((EntityPlayer)this.entityToAttack).capabilities.disableDamage) {
                 this.entityToAttack = null;
