@@ -5,12 +5,17 @@ import com.example.examplemod.utils.Calc;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 import static com.example.examplemod.utils.Calc.randint;
 
@@ -26,7 +31,6 @@ public class EntityTest2Swarm extends EntityMob {
     public EntityTest2Swarm(World p_i1738_1_) {
         super(p_i1738_1_);
         setSize(1.0f, 1.0f);
-        this.setIsBatHanging(true);
         this.isImmuneToFire = true;
     }
 
@@ -87,20 +91,6 @@ public class EntityTest2Swarm extends EntityMob {
         return false;
     }
 
-    public boolean getIsBatHanging() {
-        return Calc.getBit(this.dataWatcher.getWatchableObjectByte(16), 0);
-    }
-
-    public void setIsBatHanging(boolean par1) {
-        byte var2 = this.dataWatcher.getWatchableObjectByte(16);
-        if(par1) {
-            this.dataWatcher.updateObject(16, (byte)Calc.setBit(var2, 0));
-        } else {
-            this.dataWatcher.updateObject(16, (byte)Calc.clearBit(var2, 0));
-        }
-
-    }
-
     protected boolean isAIEnabled() {
         return false;
     }
@@ -115,56 +105,39 @@ public class EntityTest2Swarm extends EntityMob {
 
     protected void updateEntityActionState() {
         super.updateEntityActionState();
-        if(this.getIsBatHanging()) {
-            if(!this.worldObj.isBlockNormalCubeDefault(MathHelper.floor_double(this.posX), (int)this.posY + 1, MathHelper.floor_double(this.posZ), false)) {
-                this.setIsBatHanging(false);
-                this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1015, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
-            } else {
-                if(this.rand.nextInt(200) == 0) {
-                    this.rotationYawHead = (float)this.rand.nextInt(360);
-                }
-
-                if(this.worldObj.getClosestPlayerToEntity(this, 4.0D) != null) {
-                    this.setIsBatHanging(false);
-                    this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1015, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
-                }
+        double var1;
+        double var3;
+        double var5;
+        float var7;
+        float var8;
+        if(this.entityToAttack == null) {
+            if(this.currentFlightTarget != null && (!this.worldObj.isAirBlock(this.currentFlightTarget.posX, this.currentFlightTarget.posY, this.currentFlightTarget.posZ) || this.currentFlightTarget.posY < 1)) {
+                this.currentFlightTarget = null;
             }
+
+            if(this.currentFlightTarget == null || this.rand.nextInt(30) == 0 || this.currentFlightTarget.getDistanceSquared((int)this.posX, (int)this.posY, (int)this.posZ) < 4.0F) {
+                this.currentFlightTarget = new ChunkCoordinates((int)this.posX + this.rand.nextInt(7) - this.rand.nextInt(7), (int)this.posY + this.rand.nextInt(6) - 2, (int)this.posZ + this.rand.nextInt(7) - this.rand.nextInt(7));
+            }
+
+            var1 = (double)this.currentFlightTarget.posX + 0.5 - this.posX;
+            var3 = (double)this.currentFlightTarget.posY + 0.1 - this.posY;
+            var5 = (double)this.currentFlightTarget.posZ + 0.5 - this.posZ;
         } else {
-            double var1;
-            double var3;
-            double var5;
-            float var7;
-            float var8;
-            if(this.entityToAttack == null) {
-                if(this.currentFlightTarget != null && (!this.worldObj.isAirBlock(this.currentFlightTarget.posX, this.currentFlightTarget.posY, this.currentFlightTarget.posZ) || this.currentFlightTarget.posY < 1)) {
-                    this.currentFlightTarget = null;
-                }
-
-                if(this.currentFlightTarget == null || this.rand.nextInt(30) == 0 || this.currentFlightTarget.getDistanceSquared((int)this.posX, (int)this.posY, (int)this.posZ) < 4.0F) {
-                    this.currentFlightTarget = new ChunkCoordinates((int)this.posX + this.rand.nextInt(7) - this.rand.nextInt(7), (int)this.posY + this.rand.nextInt(6) - 2, (int)this.posZ + this.rand.nextInt(7) - this.rand.nextInt(7));
-                }
-
-                var1 = (double)this.currentFlightTarget.posX + 0.5 - this.posX;
-                var3 = (double)this.currentFlightTarget.posY + 0.1 - this.posY;
-                var5 = (double)this.currentFlightTarget.posZ + 0.5 - this.posZ;
-            } else {
-                var1 = this.entityToAttack.posX - this.posX;
-                var3 = this.entityToAttack.posY + (double)(this.entityToAttack.getEyeHeight() * 0.66F) - this.posY;
-                var5 = this.entityToAttack.posZ - this.posZ;
-            }
-            this.motionX += (Math.signum(var1) * 0.05 - this.motionX) * 0.1;
-            this.motionY += (Math.signum(var3) * 0.07 - this.motionY) * 0.1;
-            this.motionZ += (Math.signum(var5) * 0.05 - this.motionZ) * 0.1;
-            var7 = (float) Math.toDegrees(Math.atan2(this.motionZ, this.motionX)) - 90.0F;
-            var8 = MathHelper.wrapAngleTo180_float(var7 - this.rotationYaw);
-            this.moveForward = 0.5F;
-            this.rotationYaw += var8;
-
-            if(this.entityToAttack instanceof EntityPlayer && ((EntityPlayer)this.entityToAttack).capabilities.disableDamage) {
-                this.entityToAttack = null;
-            }
+            var1 = this.entityToAttack.posX - this.posX;
+            var3 = this.entityToAttack.posY + (double)(this.entityToAttack.getEyeHeight() * 0.66F) - this.posY;
+            var5 = this.entityToAttack.posZ - this.posZ;
         }
+        this.motionX += (Math.signum(var1) * 0.5 - this.motionX) * 0.1;
+        this.motionY += (Math.signum(var3) * 0.7 - this.motionY) * 0.1;
+        this.motionZ += (Math.signum(var5) * 0.5 - this.motionZ) * 0.1;
+        var7 = (float) Math.toDegrees(Math.atan2(this.motionZ, this.motionX)) - 90.0F;
+        var8 = MathHelper.wrapAngleTo180_float(var7 - this.rotationYaw);
+        this.moveForward = 0.5F;
+        this.rotationYaw += var8;
 
+//        if(this.entityToAttack instanceof EntityPlayer && ((EntityPlayer)this.entityToAttack).capabilities.disableDamage) {
+//            this.entityToAttack = null;
+//        }
     }
 
     protected void updateAITasks() {
@@ -186,15 +159,7 @@ public class EntityTest2Swarm extends EntityMob {
     }
 
     public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
-        if(!this.isEntityInvulnerable() && !par1DamageSource.isFireDamage() && !par1DamageSource.isExplosion()) {
-            if(!this.worldObj.isRemote && this.getIsBatHanging()) {
-                this.setIsBatHanging(false);
-            }
-
-            return super.attackEntityFrom(par1DamageSource, par2);
-        } else {
-            return false;
-        }
+        return !this.isEntityInvulnerable() && !par1DamageSource.isFireDamage() && !par1DamageSource.isExplosion() && super.attackEntityFrom(par1DamageSource, par2);
     }
 
     protected void attackEntity(Entity par1Entity, float par2) {
@@ -215,7 +180,28 @@ public class EntityTest2Swarm extends EntityMob {
 
     protected Entity findPlayerToAttack() {
         double var1 = 12.0D;
-        return this.worldObj.getClosestVulnerablePlayerToEntity(this, var1);
+        AxisAlignedBB box = this.boundingBox.expand(50, 50, 50);
+
+        List list = worldObj.getEntitiesWithinAABB(IMob.class, box);
+        Entity target = null;
+        double d0 = Double.MAX_VALUE;
+
+        for (Object entity : list) {
+            Entity entity2 = (Entity) entity;
+
+            if (!(entity2 instanceof EntityTest2Swarm)) {
+                double d1 = this.getDistanceSqToEntity(entity2);
+
+                if (d1 <= d0) {
+                    target = entity2;
+                    d0 = d1;
+                }
+            }
+        }
+
+        return target;
+//        return this.worldObj.findNearestEntityWithinAABB(IMob.class, , this);
+//        return this.worldObj.getClosestVulnerablePlayerToEntity(this, var1);
     }
 
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
