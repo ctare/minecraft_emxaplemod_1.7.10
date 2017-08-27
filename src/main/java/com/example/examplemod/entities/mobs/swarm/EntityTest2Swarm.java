@@ -1,13 +1,12 @@
 package com.example.examplemod.entities.mobs.swarm;
 
 import com.example.examplemod.entities.particles.SwarmParticleManager;
-import com.example.examplemod.utils.Calc;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
@@ -31,7 +30,6 @@ public class EntityTest2Swarm extends EntityMob {
     public EntityTest2Swarm(World p_i1738_1_) {
         super(p_i1738_1_);
         setSize(1.0f, 1.0f);
-        this.isImmuneToFire = true;
     }
 
     public void entityInit() {
@@ -58,14 +56,14 @@ public class EntityTest2Swarm extends EntityMob {
     }
 
 
-//    @SideOnly(Side.CLIENT)
-//    public int getBrightnessForRender(float par1) {
-//        return 15728880;
-//    }
-//
-//    public float getBrightness(float par1) {
-//        return 1.0F;
-//    }
+    @SideOnly(Side.CLIENT)
+    public int getBrightnessForRender(float par1) {
+        return 15728880;
+    }
+
+    public float getBrightness(float par1) {
+        return 1.0F;
+    }
 //
 //    protected float getSoundVolume() {
 //        return 0.1F;
@@ -95,14 +93,6 @@ public class EntityTest2Swarm extends EntityMob {
         return false;
     }
 
-    public void onLivingUpdate() {
-        if(this.isWet()) {
-            this.attackEntityFrom(DamageSource.drown, 1.0F);
-        }
-
-        super.onLivingUpdate();
-    }
-
     protected void updateEntityActionState() {
         super.updateEntityActionState();
         double var1;
@@ -110,13 +100,20 @@ public class EntityTest2Swarm extends EntityMob {
         double var5;
         float var7;
         float var8;
-        if(this.entityToAttack == null) {
+        if(this.isInWater()){
+            var1 = this.motionX;
+            var3 = this.motionY < 0 ? -this.motionY * 0.9 : this.motionY;
+            var5 = this.motionZ;
+        } else if(this.entityToAttack == null) {
             if(this.currentFlightTarget != null && (!this.worldObj.isAirBlock(this.currentFlightTarget.posX, this.currentFlightTarget.posY, this.currentFlightTarget.posZ) || this.currentFlightTarget.posY < 1)) {
                 this.currentFlightTarget = null;
             }
 
             if(this.currentFlightTarget == null || this.rand.nextInt(30) == 0 || this.currentFlightTarget.getDistanceSquared((int)this.posX, (int)this.posY, (int)this.posZ) < 4.0F) {
-                this.currentFlightTarget = new ChunkCoordinates((int)this.posX + this.rand.nextInt(7) - this.rand.nextInt(7), (int)this.posY + this.rand.nextInt(6) - 2, (int)this.posZ + this.rand.nextInt(7) - this.rand.nextInt(7));
+                this.currentFlightTarget = new ChunkCoordinates(
+                        (int)this.posX + this.rand.nextInt(7) - this.rand.nextInt(7),
+                        (int)this.posY + this.rand.nextInt(6) - 2,
+                        (int)this.posZ + this.rand.nextInt(7) - this.rand.nextInt(7));
             }
 
             var1 = (double)this.currentFlightTarget.posX + 0.5 - this.posX;
@@ -159,7 +156,7 @@ public class EntityTest2Swarm extends EntityMob {
     }
 
     public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
-        return !this.isEntityInvulnerable() && !par1DamageSource.isFireDamage() && !par1DamageSource.isExplosion() && super.attackEntityFrom(par1DamageSource, par2);
+        return !this.isEntityInvulnerable() && super.attackEntityFrom(par1DamageSource, par2);
     }
 
     protected void attackEntity(Entity par1Entity, float par2) {
@@ -179,8 +176,8 @@ public class EntityTest2Swarm extends EntityMob {
     }
 
     protected Entity findPlayerToAttack() {
-        double var1 = 12.0D;
-        AxisAlignedBB box = this.boundingBox.expand(50, 50, 50);
+        double range = 12.0D;
+        AxisAlignedBB box = this.boundingBox.expand(range, range * 1.2, range);
 
         List list = worldObj.getEntitiesWithinAABB(IMob.class, box);
         Entity target = null;
