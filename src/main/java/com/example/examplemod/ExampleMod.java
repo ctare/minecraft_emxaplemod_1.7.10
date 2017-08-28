@@ -41,7 +41,7 @@ public class ExampleMod {
             this
 //                    .invisible(EntityWaterSwarm.class)
                     .invisible(EntityTestSwarm.class)
-                    .invisible(EntityTest2Swarm.class)
+//                    .invisible(EntityTest2Swarm.class)
                     .invisible(EntityAirSwarm.class)
             ;
         }

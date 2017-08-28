@@ -110,10 +110,6 @@ public abstract class EntityFlyingMob extends EntityMob{
         return true;
     }
 
-    public boolean canBePushed() {
-        return false;
-    }
-
     protected boolean isAIEnabled() {
         return false;
     }

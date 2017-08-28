@@ -1,9 +1,11 @@
 package com.example.examplemod.entities.mobs.swarm;
 
 import com.example.examplemod.entities.mobs.common.EntityFlyingMob;
+import com.example.examplemod.entities.mobs.common.EntityWaterMob;
 import com.example.examplemod.entities.particles.SwarmParticleManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
@@ -14,8 +16,8 @@ import static com.example.examplemod.utils.Calc.randint;
 /**
  * Created by ctare on 2017/08/23.
  */
-public class EntityTest2Swarm extends EntityFlyingMob {
-    SwarmParticleManager particleManager = new SwarmParticleManager().changeSpeedAndTurn(2);
+public class EntityTest2Swarm extends EntityWaterMob implements ISwarm{
+    SwarmParticleManager particleManager = new SwarmParticleManager();
 
     public EntityTest2Swarm(World p_i1738_1_) {
         super(p_i1738_1_);
@@ -27,7 +29,7 @@ public class EntityTest2Swarm extends EntityFlyingMob {
         super.onUpdate();
         int rdm = randint(150, 255);
         particleManager
-                .setColor(rdm, rdm - randint(20), randint(70, 120))
+                .setColor(90, randint(90, 150), randint(170, 255))
                 .addParticle(this);
     }
 
@@ -63,7 +65,7 @@ public class EntityTest2Swarm extends EntityFlyingMob {
         for (Object entity : list) {
             Entity entity2 = (Entity) entity;
 
-            if (!(entity2 instanceof EntityTest2Swarm)) {
+            if (!(entity2 instanceof ISwarm) && this.canEntityBeSeen(entity2)) {
                 double d1 = this.getDistanceSqToEntity(entity2);
 
                 if (d1 <= d0) {
@@ -76,5 +78,10 @@ public class EntityTest2Swarm extends EntityFlyingMob {
         return target;
 //        return this.worldObj.findNearestEntityWithinAABB(IMob.class, , this);
 //        return this.worldObj.getClosestVulnerablePlayerToEntity(this, var1);
+    }
+
+    @Override
+    public boolean canBreatheUnderwater() {
+        return true;
     }
 }

@@ -3,6 +3,9 @@ package com.example.examplemod.utils;
 import com.example.examplemod.entities.particles.FXGeneric;
 import com.example.examplemod.entities.particles.ParticleEngine;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
 
@@ -78,5 +81,13 @@ public final class Calc {
         } catch (Exception ignored) {
         }
 
+    }
+
+    public static boolean isMatch(World world, int x, int y, int z, Material material){
+        try{
+            return world.getBlock(x, y, z).getMaterial().equals(material);
+        } catch (Exception ignored){
+            return false;
+        }
     }
 }
