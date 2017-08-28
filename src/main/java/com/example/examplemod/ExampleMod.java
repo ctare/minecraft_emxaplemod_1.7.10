@@ -39,9 +39,9 @@ public class ExampleMod {
         if(FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 //            RenderingRegistry.registerEntityRenderingHandler(EntitySwarm.class, new RenderSwarm());
             this
-//                    .invisible(EntityWaterSwarm.class)
                     .invisible(EntityTestSwarm.class)
 //                    .invisible(EntityTest2Swarm.class)
+                    .invisible(EntityWaterSwarm.class)
                     .invisible(EntityAirSwarm.class)
             ;
         }

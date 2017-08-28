@@ -182,25 +182,25 @@ public abstract class EntityWaterMob extends EntityMob{
     }
 
     @Override
-    public void onEntityUpdate()
-    {
+    public void onEntityUpdate() {
         int i = this.getAir();
         super.onEntityUpdate();
 
-        if (this.isEntityAlive() && !this.isInWater())
-        {
+        if (this.isEntityAlive() && !this.isInWater()) {
             i -= 2;
             this.setAir(i);
 
-            if (this.getAir() == -40)
-            {
+            if (this.getAir() == -40) {
                 this.setAir(0);
                 this.attackEntityFrom(DamageSource.drown, 5.0F);
             }
-        }
-        else
-        {
+        } else {
             this.setAir(300);
         }
+    }
+
+    @Override
+    public boolean canBreatheUnderwater() {
+        return true;
     }
 }

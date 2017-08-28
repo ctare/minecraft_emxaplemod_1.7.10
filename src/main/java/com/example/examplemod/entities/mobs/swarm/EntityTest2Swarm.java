@@ -53,35 +53,4 @@ public class EntityTest2Swarm extends EntityWaterMob implements ISwarm{
 //    protected String getDeathSound() {
 //        return "mob.bat.death";
 //    }
-
-    protected Entity findPlayerToAttack() {
-        double range = 12.0D;
-        AxisAlignedBB box = this.boundingBox.expand(range, range * 1.2, range);
-
-        List list = worldObj.getEntitiesWithinAABB(IMob.class, box);
-        Entity target = null;
-        double d0 = Double.MAX_VALUE;
-
-        for (Object entity : list) {
-            Entity entity2 = (Entity) entity;
-
-            if (!(entity2 instanceof ISwarm) && this.canEntityBeSeen(entity2)) {
-                double d1 = this.getDistanceSqToEntity(entity2);
-
-                if (d1 <= d0) {
-                    target = entity2;
-                    d0 = d1;
-                }
-            }
-        }
-
-        return target;
-//        return this.worldObj.findNearestEntityWithinAABB(IMob.class, , this);
-//        return this.worldObj.getClosestVulnerablePlayerToEntity(this, var1);
-    }
-
-    @Override
-    public boolean canBreatheUnderwater() {
-        return true;
-    }
 }
