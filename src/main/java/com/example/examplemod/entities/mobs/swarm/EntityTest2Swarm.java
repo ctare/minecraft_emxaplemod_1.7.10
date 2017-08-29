@@ -1,22 +1,15 @@
 package com.example.examplemod.entities.mobs.swarm;
 
-import com.example.examplemod.entities.mobs.common.EntityFlyingMob;
-import com.example.examplemod.entities.mobs.common.EntityWaterMob;
+import com.example.examplemod.entities.mobs.common.EntityLiquidMob;
 import com.example.examplemod.entities.particles.SwarmParticleManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.passive.EntitySquid;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 import static com.example.examplemod.utils.Calc.randint;
 
 /**
  * Created by ctare on 2017/08/23.
  */
-public class EntityTest2Swarm extends EntityWaterMob implements ISwarm{
+public class EntityTest2Swarm extends EntityLiquidMob implements ISwarm{
     SwarmParticleManager particleManager = new SwarmParticleManager();
 
     public EntityTest2Swarm(World p_i1738_1_) {

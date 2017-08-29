@@ -1,6 +1,6 @@
 package com.example.examplemod.entities.mobs.swarm;
 
-import com.example.examplemod.entities.mobs.common.EntityWaterMob;
+import com.example.examplemod.entities.mobs.common.EntityLiquidMob;
 import com.example.examplemod.entities.particles.SwarmParticleManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.IMob;
@@ -16,7 +16,7 @@ import static com.example.examplemod.utils.Calc.randint;
 /**
  * Created by ctare on 2017/08/23.
  */
-public class EntityWaterSwarm extends EntityWaterMob implements ISwarm {
+public class EntityWaterSwarm extends EntityLiquidMob implements ISwarm {
     private SwarmParticleManager particleManager = new SwarmParticleManager().changeSpeedAndTurn(1.4f);
 
     public EntityWaterSwarm(World p_i1738_1_) {

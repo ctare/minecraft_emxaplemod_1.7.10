@@ -18,11 +18,11 @@ import static com.example.examplemod.utils.Calc.isMatch;
 /**
  * Created by ctare on 2017/08/27.
  */
-public abstract class EntityWaterMob extends EntityMob{
+public abstract class EntityLiquidMob extends EntityMob{
     private ChunkCoordinates currentFlightTarget;
     public int damBonus = 0;
 
-    public EntityWaterMob(World p_i1738_1_) {
+    public EntityLiquidMob(World p_i1738_1_) {
         super(p_i1738_1_);
     }
 
