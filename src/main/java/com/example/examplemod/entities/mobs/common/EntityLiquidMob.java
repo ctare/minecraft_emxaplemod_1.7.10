@@ -23,7 +23,7 @@ import static com.example.examplemod.utils.Calc.isMatch;
 public abstract class EntityLiquidMob extends EntityMob{
     private ChunkCoordinates currentFlightTarget;
     public int damBonus = 0;
-    Material targetLiquid = Material.water;
+    public Material targetLiquid = Material.water;
 
     public EntityLiquidMob(World p_i1738_1_) {
         super(p_i1738_1_);
@@ -72,11 +72,11 @@ public abstract class EntityLiquidMob extends EntityMob{
         float var8;
 
         float speedCoefficient = 0.2f;
-        if(!isIn(Material.water, this)) {
+        if(!isIn(targetLiquid, this)) {
             speedCoefficient = 0.1f;
         }
-        if(this.entityToAttack == null || !(isIn(Material.water, entityToAttack) || this.getDistanceSqToEntity(this.entityToAttack) < 4.0)) {
-            if(this.currentFlightTarget != null && (!isMatch(worldObj, this.currentFlightTarget.posX, this.currentFlightTarget.posY, this.currentFlightTarget.posZ, Material.water) || this.currentFlightTarget.posY < 1)) {
+        if(this.entityToAttack == null || !(isIn(targetLiquid, entityToAttack) || this.getDistanceSqToEntity(this.entityToAttack) < 4.0)) {
+            if(this.currentFlightTarget != null && (!isMatch(worldObj, this.currentFlightTarget.posX, this.currentFlightTarget.posY, this.currentFlightTarget.posZ, targetLiquid) || this.currentFlightTarget.posY < 1)) {
                 this.currentFlightTarget = null;
             }
 
@@ -181,7 +181,7 @@ public abstract class EntityLiquidMob extends EntityMob{
         int i = this.getAir();
         super.onEntityUpdate();
 
-        if (this.isEntityAlive() && !isIn(Material.water, this)) {
+        if (this.isEntityAlive() && !isIn(targetLiquid, this)) {
             i -= 2;
             this.setAir(i);
 

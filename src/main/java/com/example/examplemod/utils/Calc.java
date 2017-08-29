@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
 import java.util.Random;
@@ -92,6 +93,46 @@ public final class Calc {
     }
 
     public static boolean isIn(Material liquid, Entity entity) {
-        return entity.worldObj.handleMaterialAcceleration(entity.boundingBox.expand(0.0D, -0.6000000238418579D, 0.0D), liquid, entity);
+        return entity.worldObj.handleMaterialAcceleration(entity.boundingBox.expand(0.0D, -0.4000000238418579D, 0.0D).contract(0.001D, 0.001D, 0.001D), liquid, entity);
+    }
+
+    public static void spawnLava(World worldObj, double posX, double posY, double posZ){
+        int x = (int) posX, y = (int) posY, z = (int) posZ;
+
+        if (worldObj.isAirBlock(x, y, z)) {
+            worldObj.setBlock(x, y, z, Blocks.lava);
+            worldObj.setBlockMetadataWithNotify(x, y, z, 15, 2);
+            worldObj.notifyBlockOfNeighborChange(x, y, z, Blocks.lava);
+        }
+
+        if (worldObj.isAirBlock(x + 1, y, z)) {
+            worldObj.setBlock(x + 1, y, z, Blocks.lava);
+            worldObj.setBlockMetadataWithNotify(x + 1, y, z, 15, 2);
+            worldObj.notifyBlockOfNeighborChange(x + 1, y, z, Blocks.lava);
+        }
+
+        if (worldObj.isAirBlock(x - 1, y, z)) {
+            worldObj.setBlock(x - 1, y, z, Blocks.lava);
+            worldObj.setBlockMetadataWithNotify(x - 1, y, z, 15, 2);
+            worldObj.notifyBlockOfNeighborChange(x - 1, y, z, Blocks.lava);
+        }
+
+        if (worldObj.isAirBlock(x, y, z + 1)) {
+            worldObj.setBlock(x, y, z + 1, Blocks.lava);
+            worldObj.setBlockMetadataWithNotify(x, y, z + 1, 15, 2);
+            worldObj.notifyBlockOfNeighborChange(x, y, z + 1, Blocks.lava);
+        }
+
+        if (worldObj.isAirBlock(x, y, z - 1)) {
+            worldObj.setBlock(x, y, z - 1, Blocks.lava);
+            worldObj.setBlockMetadataWithNotify(x, y, z - 1, 15, 2);
+            worldObj.notifyBlockOfNeighborChange(x, y, z - 1, Blocks.lava);
+        }
+
+        if (worldObj.isAirBlock(x, y + 1, z)) {
+            worldObj.setBlock(x, y + 1, z, Blocks.lava);
+            worldObj.setBlockMetadataWithNotify(x, y + 1, z, 15, 2);
+            worldObj.notifyBlockOfNeighborChange(x, y + 1, z, Blocks.lava);
+        }
     }
 }
