@@ -3,6 +3,7 @@ package com.example.examplemod.entities.mobs.common;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
@@ -13,6 +14,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
+import static com.example.examplemod.utils.Calc.isIn;
 import static com.example.examplemod.utils.Calc.isMatch;
 
 /**
@@ -21,6 +23,7 @@ import static com.example.examplemod.utils.Calc.isMatch;
 public abstract class EntityLiquidMob extends EntityMob{
     private ChunkCoordinates currentFlightTarget;
     public int damBonus = 0;
+    Material targetLiquid = Material.water;
 
     public EntityLiquidMob(World p_i1738_1_) {
         super(p_i1738_1_);
@@ -35,9 +38,6 @@ public abstract class EntityLiquidMob extends EntityMob{
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5d);
-        getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(50d);
-        getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(2 + damBonus);
     }
 
     @Override
@@ -72,10 +72,10 @@ public abstract class EntityLiquidMob extends EntityMob{
         float var8;
 
         float speedCoefficient = 0.2f;
-        if(!this.isInWater()) {
+        if(!isIn(Material.water, this)) {
             speedCoefficient = 0.1f;
         }
-        if(this.entityToAttack == null || !(this.entityToAttack.isInWater() || this.getDistanceSqToEntity(this.entityToAttack) < 4.0)) {
+        if(this.entityToAttack == null || !(isIn(Material.water, entityToAttack) || this.getDistanceSqToEntity(this.entityToAttack) < 4.0)) {
             if(this.currentFlightTarget != null && (!isMatch(worldObj, this.currentFlightTarget.posX, this.currentFlightTarget.posY, this.currentFlightTarget.posZ, Material.water) || this.currentFlightTarget.posY < 1)) {
                 this.currentFlightTarget = null;
             }
@@ -143,11 +143,6 @@ public abstract class EntityLiquidMob extends EntityMob{
         return false;
     }
 
-//    @Override
-//    public boolean isInWater() {
-//        return this.worldObj.handleMaterialAcceleration(this.boundingBox.expand(0.0D, -0.6000000238418579D, 0.0D), Material.water, this);
-//    }
-
     public boolean doesEntityNotTriggerPressurePlate() {
         return true;
     }
@@ -186,13 +181,13 @@ public abstract class EntityLiquidMob extends EntityMob{
         int i = this.getAir();
         super.onEntityUpdate();
 
-        if (this.isEntityAlive() && !this.isInWater()) {
+        if (this.isEntityAlive() && !isIn(Material.water, this)) {
             i -= 2;
             this.setAir(i);
 
             if (this.getAir() == -40) {
                 this.setAir(0);
-                this.attackEntityFrom(DamageSource.drown, 5.0F);
+                this.attackEntityFrom(DamageSource.drown, getMaxHealth() / 2f);
             }
         } else {
             this.setAir(300);

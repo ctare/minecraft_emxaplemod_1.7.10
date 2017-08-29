@@ -90,4 +90,8 @@ public final class Calc {
             return false;
         }
     }
+
+    public static boolean isIn(Material liquid, Entity entity) {
+        return entity.worldObj.handleMaterialAcceleration(entity.boundingBox.expand(0.0D, -0.6000000238418579D, 0.0D), liquid, entity);
+    }
 }
