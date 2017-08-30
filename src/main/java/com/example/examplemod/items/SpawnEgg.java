@@ -86,43 +86,42 @@ public class SpawnEgg extends Item {
     }
 
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        return stack;
-//        if(world.isRemote) {
-//            return stack;
-//        } else {
-//            MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(world, player, true);
-//            if(movingobjectposition == null) {
-//                return stack;
-//            } else {
-//                if(movingobjectposition.typeOfHit == MovingObjectType.BLOCK) {
-//                    int i = movingobjectposition.blockX;
-//                    int j = movingobjectposition.blockY;
-//                    int k = movingobjectposition.blockZ;
-//                    if(!world.canMineBlock(player, i, j, k)) {
-//                        return stack;
-//                    }
-//
-//                    if(!player.canPlayerEdit(i, j, k, movingobjectposition.sideHit, stack)) {
-//                        return stack;
-//                    }
-//
-//                    if(world.getBlock(i, j, k) instanceof BlockLiquid) {
-//                        Entity entity = spawnCreature(world, stack.getItemDamage(), (double)i, (double)j, (double)k);
-//                        if(entity != null) {
-//                            if(entity instanceof EntityLivingBase && stack.hasDisplayName()) {
-//                                ((EntityLiving)entity).setCustomNameTag(stack.getDisplayName());
-//                            }
-//
-//                            if(!player.capabilities.isCreativeMode) {
-//                                --stack.stackSize;
-//                            }
-//                        }
-//                    }
-//                }
-//
-//                return stack;
-//            }
-//        }
+        if(world.isRemote) {
+            return stack;
+        } else {
+            MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(world, player, true);
+            if(movingobjectposition == null) {
+                return stack;
+            } else {
+                if(movingobjectposition.typeOfHit == MovingObjectType.BLOCK) {
+                    int i = movingobjectposition.blockX;
+                    int j = movingobjectposition.blockY;
+                    int k = movingobjectposition.blockZ;
+                    if(!world.canMineBlock(player, i, j, k)) {
+                        return stack;
+                    }
+
+                    if(!player.canPlayerEdit(i, j, k, movingobjectposition.sideHit, stack)) {
+                        return stack;
+                    }
+
+                    if(world.getBlock(i, j, k) instanceof BlockLiquid) {
+                        Entity entity = spawnCreature(world, stack.getItemDamage(), (double)i, (double)j, (double)k);
+                        if(entity != null) {
+                            if(entity instanceof EntityLivingBase && stack.hasDisplayName()) {
+                                ((EntityLiving)entity).setCustomNameTag(stack.getDisplayName());
+                            }
+
+                            if(!player.capabilities.isCreativeMode) {
+                                --stack.stackSize;
+                            }
+                        }
+                    }
+                }
+
+                return stack;
+            }
+        }
     }
 
     public static Entity spawnCreature(World par0World, int par1, double par2, double par4, double par6) {
