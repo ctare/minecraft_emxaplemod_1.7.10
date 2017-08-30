@@ -41,6 +41,7 @@ public class ExampleMod {
             this
                     .invisible(EntityTestSwarm.class)
 //                    .invisible(EntityTest2Swarm.class)
+                    .invisible(EntityEnderSwarm.class)
                     .invisible(EntityWaterSwarm.class)
                     .invisible(EntityAirSwarm.class)
                     .invisible(EntityFireSwarm.class)
@@ -55,10 +56,13 @@ public class ExampleMod {
         int swarmBaseEggColor = new Color(255, 150, 0).getRGB();
         int id = 0;
         EntityRegistry.registerModEntity(EntityTest2Swarm.class,
-                SpawnEgg.addMapping("Test2Swarm", swarmBaseEggColor, Color.RED.getRGB()),
+                SpawnEgg.addMapping("Test2Swarm", swarmBaseEggColor, Color.PINK.getRGB()),
                 id++, this, 64, 2, true);
         EntityRegistry.registerModEntity(EntityTestSwarm.class,
                 SpawnEgg.addMapping("TestSwarm", swarmBaseEggColor, Color.GREEN.getRGB()),
+                id++, this, 64, 2, true);
+        EntityRegistry.registerModEntity(EntityEnderSwarm.class,
+                SpawnEgg.addMapping("EnderSwarm", swarmBaseEggColor, new Color(0, 0, 0).getRGB()),
                 id++, this, 64, 2, true);
         EntityRegistry.registerModEntity(EntityWaterSwarm.class,
                 SpawnEgg.addMapping("WaterSwarm", swarmBaseEggColor, new Color(100, 140, 255).getRGB()),
