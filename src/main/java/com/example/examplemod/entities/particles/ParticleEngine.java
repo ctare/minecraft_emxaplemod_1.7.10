@@ -102,8 +102,8 @@ public class ParticleEngine {
     }
 
     public void addEffect(World world, EntityFX fx) {
-        if(!particles[fx.getFXLayer()].containsKey(Integer.valueOf(world.provider.dimensionId)))
-            particles[fx.getFXLayer()].put(Integer.valueOf(world.provider.dimensionId), new ArrayList());
+        if(!particles[fx.getFXLayer()].containsKey(world.provider.dimensionId))
+            particles[fx.getFXLayer()].put(world.provider.dimensionId, new ArrayList());
         ArrayList parts = (ArrayList)particles[fx.getFXLayer()].get(Integer.valueOf(world.provider.dimensionId));
         if(parts.size() >= 2000)
             parts.remove(0);

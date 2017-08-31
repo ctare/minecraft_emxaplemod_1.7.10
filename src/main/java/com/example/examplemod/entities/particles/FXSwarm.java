@@ -3,10 +3,14 @@ package com.example.examplemod.entities.particles;
 /**
  * Created by ctare on 2017/08/21.
  */
+import com.example.examplemod.utils.Calc;
 import cpw.mods.fml.client.FMLClientHandler;
 import java.util.ArrayList;
 import java.util.Random;
+
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.settings.GameSettings;
@@ -14,10 +18,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 public class FXSwarm extends EntityFX {
+    public static final ResourceLocation particleTexture = new ResourceLocation("samctare", "textures/misc/particles.png");
 
     public FXSwarm(World par1World, double x, double y, double z, Entity target, float r, float g, float b) {
         super(par1World, x, y, z, 0.0D, 0.0D, 0.0D);
@@ -51,8 +57,16 @@ public class FXSwarm extends EntityFX {
         particleGravity = pg;
     }
 
-    public void renderParticle(Tessellator tessellator, float f, float f1, float f2, float f3, float f4, float f5)
-    {
+    public void renderParticle(Tessellator tessellator, float f, float f1, float f2, float f3, float f4, float f5) {
+        tessellator.draw();
+        GL11.glPushMatrix();
+        Minecraft.getMinecraft().renderEngine.bindTexture(particleTexture);
+        GL11.glDepthMask(false);
+        GL11.glEnable(3042);
+        GL11.glAlphaFunc(516, 0.003921569F);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, this.particleAlpha);
+        tessellator.startDrawingQuads();
+
         float bob = MathHelper.sin((float)particleAge / 3F) * 0.25F + 1.0F;
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.75F);
         int part = 7 + particleAge % 8;
@@ -75,6 +89,20 @@ public class FXSwarm extends EntityFX {
         tessellator.addVertexWithUV((var13 - f1 * var12) + f4 * var12, var14 + f2 * var12, (var15 - f3 * var12) + f5 * var12, var9, var10);
         tessellator.addVertexWithUV(var13 + f1 * var12 + f4 * var12, var14 + f2 * var12, var15 + f3 * var12 + f5 * var12, var8, var10);
         tessellator.addVertexWithUV((var13 + f1 * var12) - f4 * var12, var14 - f2 * var12, (var15 + f3 * var12) - f5 * var12, var8, var11);
+
+        tessellator.draw();
+        GL11.glDisable(3042);
+        GL11.glDepthMask(true);
+        GL11.glAlphaFunc(516, 0.1F);
+        GL11.glPopMatrix();
+        try{
+            Minecraft.getMinecraft().renderEngine.bindTexture((ResourceLocation) ReflectionHelper.getPrivateValue(EffectRenderer.class, null, "particleTextures", "b", "field_110737_b"));
+        }catch (Exception ignored){
+            Minecraft.getMinecraft().renderEngine.bindTexture(null);
+        }
+
+        tessellator.startDrawingQuads();
+        tessellator.setBrightness(0);
     }
 
     public int getFXLayer() {

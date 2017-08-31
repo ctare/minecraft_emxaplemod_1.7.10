@@ -3,13 +3,19 @@ package com.example.examplemod.utils;
 import com.example.examplemod.entities.particles.FXGeneric;
 import com.example.examplemod.entities.particles.ParticleEngine;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -135,4 +141,23 @@ public final class Calc {
             worldObj.notifyBlockOfNeighborChange(x, y + 1, z, Blocks.lava);
         }
     }
+
+//    private static Map<String, ResourceLocation> boundTextures = new HashMap<String, ResourceLocation>();
+//
+//    public static void bindTexture(String texture) {
+//        ResourceLocation rl = null;
+//        if (boundTextures.containsKey(texture))
+//            rl = (ResourceLocation)boundTextures.get(texture);
+//        else {
+//            rl = new ResourceLocation("artifacts", texture);
+//        }
+//        Minecraft.getMinecraft().renderEngine.bindTexture(rl);
+//    }
+//
+//    public static ResourceLocation getParticleTexture() {
+//        try {
+//            return (ResourceLocation) ReflectionHelper.getPrivateValue(EffectRenderer.class, null, "particleTextures", "b", "field_110737_b");
+//        } catch (Exception ignored) { }
+//        return null;
+//    }
 }

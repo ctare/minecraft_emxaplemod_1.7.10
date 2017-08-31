@@ -1,8 +1,10 @@
 package com.example.examplemod.entities.particles;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 
@@ -20,6 +22,16 @@ public class SwarmParticleManager {
     private float speed = 0.22f;
     private float turnSpeed = 15f;
     private float particleGravity = 0.08f;
+    private ParticleGenerator particleGenerator = new ParticleGenerator() {
+        @Override
+        public EntityFX generate(Entity target, float r, float g, float b, float speed, float turnSpeed, float particleGravity) {
+            return new FXSwarm(target.worldObj,
+                    target.posX + (random() - random()) * 2.0,
+                    target.posY + (random() - random()) * 2.0,
+                    target.posZ + (random() - random()) * 2.0,
+                    target, r, g, b, speed, turnSpeed, particleGravity);
+        }
+    };
 
     public SwarmParticleManager(int particleNum) {
         PARTICLE_NUM = particleNum;
@@ -42,15 +54,21 @@ public class SwarmParticleManager {
                 a++;
             } while (true);
             if (particles.size() < Math.max(SwarmParticleManager.particleCount(PARTICLE_NUM), 10)) {
-                EntityFX fx = new FXSwarm(target.worldObj,
-                        target.posX + (random() - random()) * 2.0,
-                        target.posY + (random() - random()) * 2.0,
-                        target.posZ + (random() - random()) * 2.0,
-                        target, r, g, b, speed, turnSpeed, particleGravity);
-                ParticleEngine.instance.addEffect(target.worldObj, fx);
+                EntityFX fx = particleGenerator.generate(target, r, g, b, speed, turnSpeed, particleGravity);
+//                ParticleEngine.instance.addEffect(target.worldObj, fx);
+                Minecraft.getMinecraft().effectRenderer.addEffect(fx);
                 particles.add(fx);
             }
         }
+    }
+
+    public interface ParticleGenerator{
+        EntityFX generate(Entity target, float r, float g, float b, float speed, float turnSpeed, float particleGravity);
+    }
+
+    public SwarmParticleManager setParticleGenerator(ParticleGenerator particleGenerator) {
+        this.particleGenerator = particleGenerator;
+        return this;
     }
 
     private static int particleCount(int n) {
@@ -99,5 +117,9 @@ public class SwarmParticleManager {
         this.g = g / 255.0f;
         this.b = b / 255.0f;
         return this;
+    }
+
+    public ArrayList<EntityFX> getParticles(){
+        return this.particles;
     }
 }
