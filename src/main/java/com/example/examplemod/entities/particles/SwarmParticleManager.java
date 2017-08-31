@@ -1,10 +1,10 @@
 package com.example.examplemod.entities.particles;
 
+import com.example.examplemod.entities.particles.swarm.EntitySwarmPart;
 import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
-import net.minecraft.world.World;
 
 import java.util.ArrayList;
 
@@ -58,6 +58,10 @@ public class SwarmParticleManager {
 //                ParticleEngine.instance.addEffect(target.worldObj, fx);
                 Minecraft.getMinecraft().effectRenderer.addEffect(fx);
                 particles.add(fx);
+
+                EntitySwarmPart ent = new EntitySwarmPart(target.worldObj, target.posX, target.posY, target.posZ, 10);
+                ent.target = target;
+                target.worldObj.spawnEntityInWorld(ent);
             }
         }
     }

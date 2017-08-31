@@ -49,26 +49,51 @@ public final class Calc {
         return value & ~(1 << bit);
     }
 
-    public static abstract class Counter {
-        private int count;
-        private final int INTERVAL;
+    public static class Counter {
+        double count;
+        final double INCREMENTAL, MAX;
 
-        public Counter(int INTERVAL) {
-            this.INTERVAL = INTERVAL;
+        public Counter(double count, double incremental, double max) {
+            this.count = count;
+            this.INCREMENTAL = incremental;
+            this.MAX = max + 1;
         }
 
-        public final void update(){
-            if(count++ >= INTERVAL){
-                action();
-                count = 0;
+        public void nextCount(){
+            this.count += INCREMENTAL;
+            if (this.count >= MAX) {
+                this.count = 0;
             }
         }
 
-        public final void restart(){
-            count = 0;
+        public double getCount(){
+            return count;
         }
 
-        public abstract void action();
+        public int getFloor(){
+            return (int) count;
+        }
+    }
+
+    public static class IterCounter extends Counter{
+        private boolean isInc = true;
+
+        public IterCounter(double count, double incremental, double max) {
+            super(count, incremental, max - 1);
+        }
+
+        @Override
+        public void nextCount(){
+            this.count += this.isInc ? INCREMENTAL : -INCREMENTAL;
+            if (this.count >= MAX) {
+                this.isInc = false;
+                this.count = MAX;
+            }
+
+            if (this.count == 0) {
+                this.isInc = true;
+            }
+        }
     }
 
     public static void drawGenericParticles(World worldObj, double x, double y, double z, double x2, double y2, double z2, float r, float g, float b, float alpha, boolean loop, int start, int num, int inc, int age, int delay, float scale) {
