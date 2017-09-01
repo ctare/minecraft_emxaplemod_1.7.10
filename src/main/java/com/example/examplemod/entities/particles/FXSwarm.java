@@ -12,6 +12,7 @@ import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
@@ -22,8 +23,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
+import static com.example.examplemod.utils.Calc.randint;
+
 public class FXSwarm extends EntityFX {
-    public static final ResourceLocation particleTexture = new ResourceLocation("samctare", "textures/misc/particles.png");
+    public static final ResourceLocation particleTexture = new ResourceLocation("swarms", "textures/misc/swarm_part2.png");
 
     public FXSwarm(World par1World, double x, double y, double z, Entity target, float r, float g, float b) {
         super(par1World, x, y, z, 0.0D, 0.0D, 0.0D);
@@ -57,43 +60,45 @@ public class FXSwarm extends EntityFX {
         particleGravity = pg;
     }
 
+    private Calc.Counter counter = new Calc.IterCounter(randint(11), 0.5, 11);
     public void renderParticle(Tessellator tessellator, float f, float f1, float f2, float f3, float f4, float f5) {
         tessellator.draw();
         GL11.glPushMatrix();
         Minecraft.getMinecraft().renderEngine.bindTexture(particleTexture);
-        GL11.glDepthMask(false);
-        GL11.glEnable(3042);
+        GL11.glDepthMask(true);
+        GL11.glEnable(GL11.GL_BLEND);
         GL11.glAlphaFunc(516, 0.003921569F);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, this.particleAlpha);
+//        GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
+//        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+//        GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
         tessellator.startDrawingQuads();
 
         float bob = MathHelper.sin((float)particleAge / 3F) * 0.25F + 1.0F;
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.75F);
-        int part = 7 + particleAge % 8;
-        float var8 = (float)part / 16F;
-        float var9 = var8 + 0.0624375F;
-        float var10 = 0.25F;
-        float var11 = var10 + 0.0624375F;
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.8F);
         float var12 = 0.1F * particleScale * bob;
+
+        int i = counter.getFloor();
+        float startX = i * 16 / 192f;
+        float endX = (i * 16 + 16) / 192f;
+        float startY = 0;
+        float endY = 1;
+
         float var13 = (float)((prevPosX + (posX - prevPosX) * (double)f) - interpPosX);
         float var14 = (float)((prevPosY + (posY - prevPosY) * (double)f) - interpPosY);
         float var15 = (float)((prevPosZ + (posZ - prevPosZ) * (double)f) - interpPosZ);
-        float var16 = 1.0F;
         float trans = (50F - (float)deathtimer) / 50F;
         tessellator.setBrightness(240);
         if((target instanceof EntityLivingBase) && ((EntityLivingBase)target).hurtTime <= 0)
-            tessellator.setColorRGBA_F(particleRed * var16, particleGreen * var16, particleBlue * var16, trans);
+            tessellator.setColorRGBA_F(particleRed, particleGreen, particleBlue, trans);
         else
-            tessellator.setColorRGBA_F(particleRed * var16, (particleGreen * var16) / 2.0F, (particleBlue * var16) / 2.0F, trans);
-        tessellator.addVertexWithUV(var13 - f1 * var12 - f4 * var12, var14 - f2 * var12, var15 - f3 * var12 - f5 * var12, var9, var11);
-        tessellator.addVertexWithUV((var13 - f1 * var12) + f4 * var12, var14 + f2 * var12, (var15 - f3 * var12) + f5 * var12, var9, var10);
-        tessellator.addVertexWithUV(var13 + f1 * var12 + f4 * var12, var14 + f2 * var12, var15 + f3 * var12 + f5 * var12, var8, var10);
-        tessellator.addVertexWithUV((var13 + f1 * var12) - f4 * var12, var14 - f2 * var12, (var15 + f3 * var12) - f5 * var12, var8, var11);
+            tessellator.setColorRGBA_F(particleRed, (particleGreen) / 2.0F, (particleBlue) / 2.0F, trans);
+
+        tessellator.addVertexWithUV(var13 - f1 * var12 - f4 * var12, var14 - f2 * var12, var15 - f3 * var12 - f5 * var12, endX, endY);
+        tessellator.addVertexWithUV((var13 - f1 * var12) + f4 * var12, var14 + f2 * var12, (var15 - f3 * var12) + f5 * var12, endX, startY);
+        tessellator.addVertexWithUV(var13 + f1 * var12 + f4 * var12, var14 + f2 * var12, var15 + f3 * var12 + f5 * var12, startX, startY);
+        tessellator.addVertexWithUV((var13 + f1 * var12) - f4 * var12, var14 - f2 * var12, (var15 + f3 * var12) - f5 * var12, startX, endY);
 
         tessellator.draw();
-        GL11.glDisable(3042);
-        GL11.glDepthMask(true);
-        GL11.glAlphaFunc(516, 0.1F);
         GL11.glPopMatrix();
         try{
             Minecraft.getMinecraft().renderEngine.bindTexture((ResourceLocation) ReflectionHelper.getPrivateValue(EffectRenderer.class, null, "particleTextures", "b", "field_110737_b"));
@@ -103,6 +108,10 @@ public class FXSwarm extends EntityFX {
 
         tessellator.startDrawingQuads();
         tessellator.setBrightness(0);
+
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glDepthMask(true);
+        GL11.glAlphaFunc(516, 0.1F);
     }
 
     public int getFXLayer() {
@@ -110,6 +119,7 @@ public class FXSwarm extends EntityFX {
     }
 
     public void onUpdate() {
+        counter.nextCount();
         prevPosX = posX;
         prevPosY = posY;
         prevPosZ = posZ;
@@ -124,9 +134,9 @@ public class FXSwarm extends EntityFX {
         }
         pushOutOfBlocks(posX, posY, posZ);
         moveEntity(motionX, motionY, motionZ);
-        motionX *= 0.98499999999999999D;
-        motionY *= 0.98499999999999999D;
-        motionZ *= 0.98499999999999999D;
+        motionX *= 0.985;
+        motionY *= 0.985;
+        motionZ *= 0.985;
         if(target != null && !target.isDead && (!(target instanceof EntityLivingBase) || ((EntityLivingBase)target).deathTime <= 0)) {
             boolean hurt = false;
             if(target instanceof EntityLivingBase)

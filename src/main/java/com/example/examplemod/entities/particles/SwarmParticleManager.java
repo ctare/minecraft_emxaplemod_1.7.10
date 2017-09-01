@@ -55,13 +55,8 @@ public class SwarmParticleManager {
             } while (true);
             if (particles.size() < Math.max(SwarmParticleManager.particleCount(PARTICLE_NUM), 10)) {
                 EntityFX fx = particleGenerator.generate(target, r, g, b, speed, turnSpeed, particleGravity);
-//                ParticleEngine.instance.addEffect(target.worldObj, fx);
                 Minecraft.getMinecraft().effectRenderer.addEffect(fx);
                 particles.add(fx);
-
-                EntitySwarmPart ent = new EntitySwarmPart(target.worldObj, target.posX, target.posY, target.posZ, 10);
-                ent.target = target;
-                target.worldObj.spawnEntityInWorld(ent);
             }
         }
     }
