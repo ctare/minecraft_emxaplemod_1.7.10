@@ -1,21 +1,13 @@
 package com.example.examplemod.utils;
 
 import com.example.examplemod.entities.particles.FXGeneric;
-import com.example.examplemod.entities.particles.ParticleEngine;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
-import cpw.mods.fml.relauncher.ReflectionHelper;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 /**
@@ -94,25 +86,6 @@ public final class Calc {
                 this.isInc = true;
             }
         }
-    }
-
-    public static void drawGenericParticles(World worldObj, double x, double y, double z, double x2, double y2, double z2, float r, float g, float b, float alpha, boolean loop, int start, int num, int inc, int age, int delay, float scale) {
-        FXGeneric fb = new FXGeneric(worldObj, x, y, z, x2, y2, z2);
-        fb.setMaxAge(age, delay);
-        fb.setRBGColorF(r, g, b);
-        fb.setAlphaF(alpha);
-        fb.setLoop(loop);
-        fb.setParticles(start, num, inc);
-        fb.setScale(scale);
-        ParticleEngine.instance.addEffect(worldObj, fb);
-    }
-
-    public static void setRecentlyHit(EntityLivingBase ent, int hit) {
-        try {
-            ObfuscationReflectionHelper.setPrivateValue(EntityLivingBase.class, ent, hit, "recentlyHit", "field_70718_bc");
-        } catch (Exception ignored) {
-        }
-
     }
 
     public static boolean isMatch(World world, int x, int y, int z, Material material){

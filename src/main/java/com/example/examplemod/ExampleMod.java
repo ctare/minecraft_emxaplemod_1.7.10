@@ -3,23 +3,20 @@ package com.example.examplemod;
 import com.example.examplemod.entities.mobs.common.RenderEmpty;
 import com.example.examplemod.entities.mobs.swarm.*;
 import com.example.examplemod.entities.particles.swarm.EntitySwarmPart;
-import com.example.examplemod.entities.particles.ParticleEngine;
 import com.example.examplemod.entities.particles.swarm.RenderSwarmPart;
 import com.example.examplemod.items.SpawnEgg;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
-import net.minecraft.client.renderer.entity.RenderXPOrb;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.common.MinecraftForge;
 
 import java.awt.*;
 
@@ -34,8 +31,6 @@ public class ExampleMod {
     @EventHandler
     public void init(FMLInitializationEvent event) {
 		// some example code
-        FMLCommonHandler.instance().bus().register(ParticleEngine.instance);
-        MinecraftForge.EVENT_BUS.register(ParticleEngine.instance);
         if(FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 //            RenderingRegistry.registerEntityRenderingHandler(EntitySwarm.class, new RenderSwarm());
             RenderingRegistry.registerEntityRenderingHandler(EntitySwarmPart.class, new RenderSwarmPart());

@@ -1,6 +1,5 @@
 package com.example.examplemod.entities.particles;
 
-import com.example.examplemod.entities.particles.swarm.EntitySwarmPart;
 import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
