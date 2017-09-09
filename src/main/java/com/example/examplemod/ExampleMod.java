@@ -2,8 +2,6 @@ package com.example.examplemod;
 
 import com.example.examplemod.entities.mobs.common.RenderEmpty;
 import com.example.examplemod.entities.mobs.swarm.*;
-import com.example.examplemod.entities.particles.swarm.EntitySwarmPart;
-import com.example.examplemod.entities.particles.swarm.RenderSwarmPart;
 import com.example.examplemod.items.SpawnEgg;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -68,9 +66,6 @@ public class ExampleMod {
                 id++, this, 64, 2, true);
         EntityRegistry.registerModEntity(EntityFireSwarm.class,
                 SpawnEgg.addMapping("FireSwarm", swarmBaseEggColor, new Color(255, 70, 70).getRGB()),
-                id++, this, 64, 2, true);
-        EntityRegistry.registerModEntity(EntitySwarmPart.class,
-                SpawnEgg.addMapping("EntitySwarmPart", swarmBaseEggColor, new Color(255, 50, 200).getRGB()),
                 id++, this, 64, 2, true);
         System.out.println("entities count : " + id);
         EntityRegistry.addSpawn(EntityWaterSwarm.class, 20, 0, 1, EnumCreatureType.waterCreature, BiomeGenBase.deepOcean);

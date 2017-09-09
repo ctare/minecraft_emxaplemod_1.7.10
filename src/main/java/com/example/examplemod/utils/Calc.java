@@ -1,10 +1,7 @@
 package com.example.examplemod.utils;
 
-import com.example.examplemod.entities.particles.FXGeneric;
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
