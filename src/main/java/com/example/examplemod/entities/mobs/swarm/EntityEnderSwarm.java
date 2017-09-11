@@ -38,6 +38,7 @@ public class EntityEnderSwarm extends EntityMob implements ISwarm{
     public EntityEnderSwarm(World p_i1738_1_) {
         super(p_i1738_1_);
         setSize(1.0f, 1.0f);
+        this.getNavigator().setAvoidsWater(true);
     }
 
     @Override
